@@ -20,9 +20,11 @@
     </div>
 </div>
 
+
+
 <div class="row">
     <div class="col-md-12">
-        <table > 
+        <table class="table table-striped"> 
             <thead>
                 <tr><th>Id</th>
                 <th>Usuario</th>
@@ -43,7 +45,9 @@
                     <td>@e.DataDevolucao.ToString("dd/MM/yyyy")</td>
                     <td>@e.Livro.Titulo</td>
                     <td>@e.Livro.Autor</td>
-                    <td><a href="/Emprestimo/Edicao/@e.Id">Editar</a></td>
+                    <td><a href="/Emprestimo/Edicao/@e.Id">
+                      <button type="button" class="btn btn-success">Editar</button>
+                    </a></td>
                 </tr>
                 }
             </tbody>

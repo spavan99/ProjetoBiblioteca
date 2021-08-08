@@ -70,9 +70,9 @@ namespace Biblioteca.Models
                 //busca os livros onde o id não está entre os ids de livro em empréstimo
                 // utiliza uma subconsulta
                 return
-                    bc.Livros
-                    .Where(l =>  !(bc.Emprestimos.Where(e => e.Devolvido == false).Select(e => e.LivroId).Contains(l.Id)) )
-                    .ToList();
+                   bc.Livros
+                   .Where(l =>  !(bc.Emprestimos.Where(e => e.Devolvido == false).Select(e => e.LivroId).Contains(l.Id)) )
+                   .ToList();
             }
         }
 
