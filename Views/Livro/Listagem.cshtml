@@ -1,73 +1,182 @@
 @model List<Livro>
+
 @{
     ViewData["Title"] = "Listagem de Livros";
+
+    int FiltroPorPag = Int32.Parse(ViewData["livrosPorPagina"].ToString());
+    int PaginaAtual =  Int32.Parse(ViewData["PaginaAtual"].ToString());
+    int NumLivrosPorPag = (Model.Count<FiltroPorPag ? Model.Count : FiltroPorPag);
+    int NumTotalDePag = ( NumLivrosPorPag > 0 ? ( Model.Count/NumLivrosPorPag  + (Model.Count%NumLivrosPorPag==0 ? 0 : 1)) : 1 );
+//    int NumTotalDePag = Model.Count/NumLivrosPorPag + (Model.Count%NumLivrosPorPag==0 ? 0 : 1); 
+
 }
+
 <div class="row">
     <div class="col-md-12">
-    <form class="form-inline" method="POST">
+
+    <form class="form-inline"  asp-controller="Livro" asp-action="Listagem" method="POST">
+
         <div class="form-group mb-2">
             <select name="TipoFiltro" class="form-control">
                 <option value="Autor">Autor</option>
                 <option value="Titulo">Título</option>
             </select>
         </div>
+
         <div class="form-group mb-2 mx-sm-3">
-            <input type="text" placeholder="Filtro" name="Filtro" class="form-control" />
+            <input type="text" placeholder="Filtro" name="Filtro" class="form-control"/>
         </div>
-        <button type="submit" class="btn btn-primary mb-2">Pesquisar</button>
+
+        <button type="submit" class="btn btn-primary mb-2  mx-sm-3">Pesquisar</button>
+
+        <div class="form-group mb-2 mx-sm-3">
+       
+            <select name="itensPorPagina" id="itensPorPagina" onclick="this.form.submit()"  >
+                
+                @if ( ViewBag.SetPagina == "10"){
+                   <option value="10"  selected >10 livros</option>
+                }else{
+                    <option value="10" >10 livros</option>
+                }
+
+               @if ( ViewBag.SetPagina == "15"){
+                   <option value="15"  selected >15 livros</option>
+                }else{
+                    <option value="15" >15 livros</option>
+                }
+
+                @if ( ViewBag.SetPagina == "20"){
+                   <option value="20"  selected >20 livros</option>
+                }else{
+                    <option value="20" >20 livros</option>
+                }
+
+                @if ( ViewBag.SetPagina == "40"){
+                   <option value="40"  selected >40 livros</option>
+                }else{
+                    <option value="40" >40 livros</option>
+                }
+
+                @if ( ViewBag.SetPagina == "50"){
+                   <option value="50"  selected >50 livros</option>
+                }else{
+                    <option value="50" >50 livros</option>
+                }
+                @if ( ViewBag.SetPagina == "@Model.Count"){
+                   <option value=@Model.Count  selected >Todos-@Model.Count</option>
+                }else{
+                    <option value=@Model.Count >Todos-@Model.Count</option>
+                }
+
+            </select>
+           <!--  <button type="submit" > ->> </button> -->
+
+        </div>
+
+        <div class="form-group mb-2 mx-sm-3" id="SeletorPaginas">
+            <span>Página:</span>
+            @for(int i=1; i<=NumTotalDePag; i++)
+            {
+                <span style="padding: 8px;"><a href="/Livro/Listagem?PaginaAtual=@i">@i, </a></span>
+            }
+        </div>
+
     </form>
+
     </div>
+
 </div>
 
 <div class="row">
     <div class="col-md-12">
+
+        @if(Model.Count!=0)
+        {
         <table class="table table-striped"> 
+            <thead>
+                <tr><th>Id</th>
+                <th>Titulo</th>
+                <th>Autor</th>
+                <th>Ano</th>
+                <th></th>
+                </tr>
+            </thead>
 
-            @{ if( Model.Count > 0){
-                <thead>
-                    <tr><th>Id</th>
-                    <th>Titulo</th>
-                    <th>Autor</th>
-                    <th>Ano</th>
-                    <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach(Livro l in Model)
-                    {
-                    <tr>
-                        <td>@l.Id</td>
-                        <td>@l.Titulo</td>
-                        <td>@l.Autor</td>
-                        <td>@l.Ano</td>
-                        <td><a href="/Livro/Edicao/@l.Id">
-                          <button type="button" class="btn btn-success">Editar</button>
+            
+            <tbody>
+                @for(int i = (PaginaAtual-1)*NumLivrosPorPag; i<(NumLivrosPorPag*PaginaAtual<Model.Count?NumLivrosPorPag*PaginaAtual:Model.Count); i++)
+                {
+                <tr>
+                    <td>@Model[i].Id</td>
+                    <td>@Model[i].Titulo</td>
+                    <td>@Model[i].Autor</td>
+                    <td>@Model[i].Ano</td>
+
+                        <td><a href="/Livro/Edicao/@Model[i].Id">
+                            <button type="button" class="btn btn-success">Editar</button>
                         </a></td>
-                    </tr>
-                    }
-                </tbody>
-            }else{
-                <thead>
-                    <tr><th>Id</th>
-                    <th>Titulo</th>
-                    <th>Autor</th>
-                    <th>Ano</th>
-                    <th></th>
-                    </tr>
-                </thead>
-    
-                <tbody>
-                
-                   <tr> <td>
-                     Nenhum registro encontrado
-                   </td> </tr> 
-                
-                </tbody>
-
-            } 
-
-            }
-
+                </tr>
+                }
+            </tbody>
         </table>
+        }
+        else
+        {
+            <h2 style="color: red;">Nenhum registro encontrado</h2>
+        }
     </div>
 </div>
+
+
+
+
+
+
+
+<script type="text/javascript">
+   
+    function SetPagina9()
+    {
+ 
+       var x9 = document.getElementById("itensPorPagina");
+
+      alert( "teste clicad " + x9 );  
+
+       x9.options[x9.selectedIndex].defaultSelected = true;
+       
+       this.form.submit();
+
+      //onclick="this.form.submit()    --. coloca evento select funciona
+
+
+
+       // var x = document.getElementById("itensPorPagina").value;
+
+     //   alert( "teste clicad " + x9 );  
+
+
+     //  document.getElementById("itensPorPagina").value = x;
+
+    //   document.getElementById("itensPorPagina").value(x).prop('selected', true );
+     //  document.getElementById("itensPorPagina").option = "selected";
+
+
+
+       // $("#itensPorPagina").val("15");
+        
+      // window.location.reload();
+
+    }
+
+</script>
+
+
+
+
+
+
+
+
+
+
+

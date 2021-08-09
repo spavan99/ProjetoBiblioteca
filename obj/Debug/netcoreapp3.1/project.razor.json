@@ -14402,8 +14402,8 @@
   "RootNamespace": "Biblioteca",
   "Documents": [
     {
-      "FilePath": "s:\\senac-2021\\uc7\\Biblioteca\\Views\\Usuarios\\cadastroRealizado.cshtml",
-      "TargetPath": "Views\\Usuarios\\cadastroRealizado.cshtml",
+      "FilePath": "s:\\senac-2021\\uc7\\Biblioteca\\Views\\Usuarios\\CadastroRealizado.cshtml",
+      "TargetPath": "Views\\Usuarios\\CadastroRealizado.cshtml",
       "FileKind": "mvc"
     },
     {
@@ -14487,8 +14487,8 @@
       "FileKind": "mvc"
     },
     {
-      "FilePath": "s:\\senac-2021\\uc7\\Biblioteca\\Views\\Usuarios\\editarUsuario.cshtml",
-      "TargetPath": "Views\\Usuarios\\editarUsuario.cshtml",
+      "FilePath": "s:\\senac-2021\\uc7\\Biblioteca\\Views\\Usuarios\\EditarUsuario.cshtml",
+      "TargetPath": "Views\\Usuarios\\EditarUsuario.cshtml",
       "FileKind": "mvc"
     },
     {
